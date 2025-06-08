@@ -1,89 +1,160 @@
-# Back Radios API
+# Backend API pour Gestion de Radios
 
-This is the backend API for a radio streaming application. It allows you to manage a list of radio stations.
+API RESTful pour la gestion d'une collection de radios, développée avec Node.js, Express et MongoDB.
 
-## Features
+## Fonctionnalités
 
-- Get all radio stations
-- Create a new radio station
-- Update an existing radio station
-- Delete a radio station
+- Gestion complète des radios (CRUD)
+- Validation des données
+- Vérification des doublons (nom et URL de stream)
+- Pagination et filtrage des résultats
+- Optimisation des requêtes MongoDB
+- Gestion des images
+- Logs détaillés
 
-## Technologies Used
+## Prérequis
 
-- [Node.js](https://nodejs.org/)
-- [Express.js](https://expressjs.com/)
-- [MongoDB](https://www.mongodb.com/) with [Mongoose](https://mongoosejs.com/)
-- [dotenv](https://www.npmjs.com/package/dotenv) for environment variables
-- [cors](https://www.npmjs.com/package/cors) for handling Cross-Origin Resource Sharing
-- [express-validator](https://express-validator.github.io/docs/) for request validation
-- [multer](https://www.npmjs.com/package/multer) for handling form-data
+- Node.js (v14 ou supérieur)
+- MongoDB
+- npm ou yarn
 
-## Getting Started
+## Installation
 
-### Prerequisites
+1. Cloner le repository :
 
-- Node.js installed
-- MongoDB installed and running
+   ```bash
+   git clone <URL_DU_REPO>
+   cd back-radios
+   ```
 
-### Installation
+2. Installer les dépendances :
 
-1.  Clone the repository:
-    ```bash
-    git clone <repository-url>
-    ```
-2.  Install the dependencies:
-    ```bash
-    npm install
-    ```
-3.  Create a `.env` file in the root of the project and add the following environment variables:
-    ```
-    MONGO_URI=<your-mongodb-connection-string>
-    PORT=5000
-    ```
-4.  Start the server:
-    `bash
-npm start
-`
-    The server will be running on `http://localhost:5000`.
+   ```bash
+   npm install
+   ```
+
+3. Configurer les variables d'environnement :
+   Créer un fichier `.env` à la racine du projet avec les variables suivantes :
+
+   ```
+   PORT=3000
+   MONGODB_URI=mongodb://localhost:27017/radios
+   ```
+
+4. Démarrer le serveur :
+
+   ```bash
+   npm start
+   ```
+
+## Structure du Projet
+
+```
+.
+├── index.js              # Point d'entrée de l'application
+├── models/
+│   └── Radio.js         # Modèle Mongoose pour les radios
+├── routes/
+│   └── radios.js        # Routes de l'API
+├── middleware/
+│   └── errorHandler.js  # Gestionnaire d'erreurs global
+├── .env                 # Variables d'environnement
+├── package.json
+└── README.md
+```
 
 ## API Endpoints
 
-All endpoints are prefixed with `/api/radios`.
+### GET /api/radios
 
-| Method   | Endpoint | Description                       |
-| -------- | -------- | --------------------------------- |
-| `GET`    | `/`      | Get all radio stations.           |
-| `POST`   | `/`      | Create a new radio station.       |
-| `PUT`    | `/:id`   | Update a radio station by its ID. |
-| `DELETE` | `/:id`   | Delete a radio station by its ID. |
+Récupère la liste des radios avec pagination et filtrage.
 
-### `POST /`
+Paramètres de requête :
 
-Creates a new radio station.
+- `page` : Numéro de page (défaut: 1)
+- `limit` : Nombre d'éléments par page (défaut: 10)
+- `genre` : Filtre par genre
+- `search` : Recherche par nom
+- `sort` : Tri des résultats (défaut: 'name')
 
-**Request body:**
+### POST /api/radios
 
-```json
-{
-  "name": "Radio Name",
-  "stream_url": "http://example.com/stream",
-  "image": "http://example.com/image.jpg",
-  "genre": "Rock"
-}
-```
+Ajoute une nouvelle radio.
 
-### `PUT /:id`
-
-Updates an existing radio station.
-
-**Request body:**
+Corps de la requête (multipart/form-data) :
 
 ```json
 {
-  "name": "Updated Radio Name",
-  "stream_url": "http://example.com/new-stream",
-  "image": "http://example.com/new-image.jpg",
-  "genre": "Pop"
+  "image": "URL de l'image",
+  "name": "Nom de la radio",
+  "stream_url": "URL du stream",
+  "genre": "Genre de la radio"
 }
 ```
+
+### PUT /api/radios/:id
+
+Met à jour une radio existante.
+
+Corps de la requête (multipart/form-data) :
+
+```json
+{
+  "image": "URL de l'image",
+  "name": "Nom de la radio",
+  "stream_url": "URL du stream",
+  "genre": "Genre de la radio"
+}
+```
+
+### DELETE /api/radios/:id
+
+Supprime une radio.
+
+## Validation et Sécurité
+
+- Vérification des champs requis
+- Validation du format des données
+- Vérification des doublons (nom et URL de stream)
+- Gestion des erreurs globalisée
+- Logs détaillés pour le debugging
+
+## Optimisations
+
+- Indexation MongoDB pour les recherches fréquentes
+- Pagination pour les grandes collections
+- Requêtes optimisées avec lean()
+- Validation des données côté serveur
+- Gestion efficace des erreurs
+
+## Déploiement
+
+Le projet est configuré pour être déployé sur Vercel. La configuration est définie dans le fichier `vercel.json`.
+
+## Développement
+
+Pour lancer le serveur en mode développement :
+
+```bash
+npm run dev
+```
+
+## Tests
+
+Pour exécuter les tests :
+
+```bash
+npm test
+```
+
+## Contribution
+
+1. Fork le projet
+2. Créer une branche pour votre fonctionnalité
+3. Commiter vos changements
+4. Pousser vers la branche
+5. Ouvrir une Pull Request
+
+## Licence
+
+MIT
