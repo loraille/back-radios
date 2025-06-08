@@ -12,6 +12,10 @@ const RadioSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true
+  },
+  genre: {
+    type: String,
+    required: true
   }
 });
 

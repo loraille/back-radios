@@ -30,6 +30,7 @@ router.post(
       check('name', 'Name is required').not().isEmpty(),
       check('stream_url', 'Stream URL is required').not().isEmpty(),
       check('image', 'Image is required').not().isEmpty(),
+      check('genre', 'Genre is required').not().isEmpty(),
     ],
   ],
   async (req, res) => {
@@ -38,13 +39,14 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, stream_url, image } = req.body;
+    const { name, stream_url, image, genre } = req.body;
 
     try {
       const newRadio = new Radio({
         name,
         stream_url,
         image,
+        genre,
       });
 
       const radio = await newRadio.save();
@@ -60,13 +62,14 @@ router.post(
 // @desc    Update a radio
 // @access  Public
 router.put('/:id', upload.none(), async (req, res) => {
-  const { name, stream_url, image } = req.body;
+  const { name, stream_url, image, genre } = req.body;
 
   // Build radio object
   const radioFields = {};
   if (name) radioFields.name = name;
   if (stream_url) radioFields.stream_url = stream_url;
   if (image) radioFields.image = image;
+  if (genre) radioFields.genre = genre;
 
   try {
     let radio = await Radio.findById(req.params.id);

@@ -43,8 +43,8 @@ This is the backend API for a radio streaming application. It allows you to mana
     ```
 4.  Start the server:
     `bash
-    npm start
-    `
+npm start
+`
     The server will be running on `http://localhost:5000`.
 
 ## API Endpoints
@@ -68,7 +68,8 @@ Creates a new radio station.
 {
   "name": "Radio Name",
   "stream_url": "http://example.com/stream",
-  "image": "http://example.com/image.jpg"
+  "image": "http://example.com/image.jpg",
+  "genre": "Rock"
 }
 ```
 
@@ -82,6 +83,7 @@ Updates an existing radio station.
 {
   "name": "Updated Radio Name",
   "stream_url": "http://example.com/new-stream",
-  "image": "http://example.com/new-image.jpg"
+  "image": "http://example.com/new-image.jpg",
+  "genre": "Pop"
 }
 ```
